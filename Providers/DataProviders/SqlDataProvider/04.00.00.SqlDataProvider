@@ -1,0 +1,395 @@
+﻿/****** Object:  Table {databaseOwner}[{objectQualifier}WESNet_ContentDejour]    Script Date: 05/28/2008 14:05:42 ******/
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour](
+	[KeyID] [int] IDENTITY(1,1) NOT NULL,
+	[ModuleId] [int] NOT NULL,
+	[Month] [int] NULL,
+	[Day] [int] NULL,
+	[DayofWeek] [int] NULL,
+	[StartTime] [int] NULL,
+	[EndTime] [int] NULL,
+	[CategoryID] [int] NULL,
+	[Disabled] [bit] NOT NULL,
+	[Title] [nvarchar](255) NULL,
+	[DesktopHTML] [ntext] NOT NULL,
+	[DesktopSummary] [ntext] NULL,
+	[CreatedByUser] [int] NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_WESNet_ContentDejour] PRIMARY KEY CLUSTERED ([KeyID] ASC)
+)
+END
+GO
+
+/****** Object:  Index [IX_WESNet_ContentDejour_Day]    Script Date: 05/28/2008 14:05:42 ******/
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND name = N'IX_WESNet_ContentDejour_Day')
+CREATE NONCLUSTERED INDEX [IX_WESNet_ContentDejour_Day] ON {databaseOwner}[{objectQualifier}WESNet_ContentDejour] 
+(
+	[Day] ASC
+)
+GO
+
+/****** Object:  Index [IX_WESNet_ContentDejour_DayofWeek]    Script Date: 05/28/2008 14:05:42 ******/
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND name = N'IX_WESNet_ContentDejour_DayofWeek')
+CREATE NONCLUSTERED INDEX [IX_WESNet_ContentDejour_DayofWeek] ON {databaseOwner}[{objectQualifier}WESNet_ContentDejour] 
+(
+	[DayofWeek] ASC
+)
+GO
+
+/****** Object:  Index [IX_WESNet_ContentDejour_Month]    Script Date: 05/28/2008 14:05:42 ******/
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND name = N'IX_WESNet_ContentDejour_Month')
+CREATE NONCLUSTERED INDEX [IX_WESNet_ContentDejour_Month] ON {databaseOwner}[{objectQualifier}WESNet_ContentDejour] 
+(
+	[Month] ASC
+)
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_WESNet_ContentDejour_{objectQualifier}Modules]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]  WITH CHECK ADD  CONSTRAINT [FK_WESNet_ContentDejour_{objectQualifier}Modules] FOREIGN KEY([ModuleId])
+REFERENCES [{objectQualifier}Modules] ([ModuleID])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour] CHECK CONSTRAINT [FK_WESNet_ContentDejour_{objectQualifier}Modules]
+GO
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}WESNet_ContentDejour_Categories]    Script Date: 05/28/2008 14:05:42 ******/
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_Categories]') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+BEGIN
+CREATE TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_Categories](
+	[CategoryID] [int] IDENTITY(0,1) NOT NULL,
+	[ModuleID] [int] NOT NULL,
+	[Category] [nvarchar](50) NOT NULL,
+	[ViewOrder] [int] NULL,
+ CONSTRAINT [PK_{objectQualifier}WESNet_ContentDejour_Categories] PRIMARY KEY CLUSTERED 
+(
+	[CategoryID] ASC
+)
+)
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}WESNet_ContentDejour_Categories_{objectQualifier}Modules]') AND type = 'F')
+ALTER TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_Categories]  WITH NOCHECK ADD  CONSTRAINT [FK_{objectQualifier}WESNet_ContentDejour_Categories_{objectQualifier}Modules] FOREIGN KEY([ModuleID])
+REFERENCES [{objectQualifier}Modules] ([ModuleID])
+ON DELETE CASCADE
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_Categories] CHECK CONSTRAINT [FK_{objectQualifier}WESNet_ContentDejour_Categories_{objectQualifier}Modules]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddCategory]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddCategory]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddCategory]
+	@ModuleID int,
+	@Category nvarchar(50),
+	@ViewOrder int
+AS	
+
+INSERT INTO {objectQualifier}WESNet_ContentDejour_Categories
+   (ModuleID,
+	Category,
+	ViewOrder)
+VALUES
+   (@ModuleID,
+    @Category,
+	@ViewOrder)
+
+SELECT SCOPE_IDENTITY()
+
+'
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]
+
+	@ModuleId       int,
+	@Month			int,
+	@Day			int,
+	@DayofWeek		int,
+	@StartTime		int,
+	@EndTime		int,
+	@CategoryID		int,
+	@Disabled		bit,
+	@Title			nvarchar(255),
+	@DesktopHtml    ntext,
+	@DesktopSummary ntext,
+	@UserID         int
+
+AS
+
+INSERT INTO {objectQualifier}WESNet_ContentDejour (
+	ModuleId,
+	[Month],
+	[Day],
+	[DayofWeek],
+	StartTime,
+	EndTime,
+	CategoryID,
+	[Disabled],
+	Title,
+	DesktopHtml,
+	DesktopSummary,
+	CreatedByUser,
+	CreatedDate
+) 
+VALUES (
+	@ModuleId,
+	@Month,
+	@Day,
+	@DayofWeek,
+	@StartTime,
+	@EndTime,
+	@CategoryID,
+	@Disabled,
+	@Title,
+	@DesktopHtml,
+	@DesktopSummary,
+	@UserID,
+	getdate()
+)
+
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteCategory]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteCategory]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteCategory]
+	@CategoryID int
+
+AS	
+
+DELETE FROM {objectQualifier}WESNet_ContentDejour_Categories
+WHERE CategoryID=@CategoryID
+
+
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteContent]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteContent]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_DeleteContent]
+
+	@KeyId			int
+
+AS
+
+DELETE FROM {objectQualifier}WESNet_ContentDejour
+WHERE KeyId = @KeyId
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategories]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategories]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategories]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategories]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategories]
+	@ModuleID int
+AS
+
+SELECT *
+FROM {objectQualifier}WESNet_ContentDejour_Categories
+WHERE ModuleID=@ModuleID
+ORDER BY ViewOrder
+
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategory]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategory]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetCategory]
+	@CategoryID int
+AS
+
+SELECT *
+FROM {objectQualifier}WESNet_ContentDejour_Categories
+WHERE CategoryID=@CategoryID
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]
+
+	@KeyID int
+
+AS
+
+SELECT S.*, C.Category
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+WHERE  KeyID = @KeyID
+
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+
+	@ModuleID int,
+	@Month int,
+	@Day int,
+	@DayofWeek int,
+	@CategoryID int,
+	@IncludeDisabled bit
+
+AS
+
+SELECT S.*, C.Category
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+WHERE  S.ModuleID = @ModuleID AND
+	   ((@Month is null) OR ([Month]=@Month)) AND
+	   ((@Day is null) OR ([Day]=@Day)) AND
+	   ((@DayofWeek is null) OR ([DayofWeek]=@DayofWeek)) AND
+	   ((@CategoryID is null) OR (S.CategoryID=@CategoryID)) AND
+	   ((@IncludeDisabled = 1) OR ([Disabled]=0))
+ORDER BY [Month], [Day], [DayofWeek], StartTime
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateCategory]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateCategory]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateCategory]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateCategory]
+	@ModuleID int,
+	@CategoryID int,	
+	@Category nvarchar(50),
+	@ViewOrder int
+AS	
+
+UPDATE {objectQualifier}WESNet_ContentDejour_Categories 
+
+SET
+    ModuleID = @ModuleID,
+    Category = @Category,
+    ViewOrder = @ViewOrder
+
+WHERE CategoryID=@CategoryID
+' 
+END
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]    Script Date: 05/28/2008 14:05:42 ******/
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]
+GO
+
+IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+BEGIN
+EXEC dbo.sp_executesql @statement = N'
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]
+
+	@KeyId			int,
+	@Month			int,
+	@Day			int,
+	@DayofWeek		int,
+	@StartTime		int,
+	@EndTime		int,
+	@CategoryID		int,
+	@Disabled		bit,
+	@Title			nvarchar(255),
+	@DesktopHtml    ntext,
+	@DesktopSummary ntext,
+	@UserID         int
+
+AS
+
+UPDATE {objectQualifier}WESNet_ContentDejour
+SET
+	[Month] = @Month,
+	[Day] = @Day,
+	[DayofWeek] = @DayofWeek,
+	StartTime = @StartTime,
+	EndTime = @EndTime,
+	CategoryID = @CategoryID,
+	[Disabled] = @Disabled,
+	Title = @Title,
+	DesktopHtml = @DesktopHtml,
+    DesktopSummary = @DesktopSummary,
+    CreatedByUser  = @UserID,
+    CreatedDate    = getdate()
+WHERE KeyId = @KeyId
+
+' 
+END
+GO

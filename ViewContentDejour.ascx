@@ -1,0 +1,3 @@
+﻿<%@ Control Language="C#" AutoEventWireup="false" Inherits="WESNet.DNN.Modules.ContentDejour.ViewContentDejour" Codebehind="ViewContentDejour.ascx.cs" %>
+<asp:HyperLink id="lnkEdit" runat="server" style="float:left; display:block"><asp:Image ID="imgEdit" Runat="server" ImageUrl="~/images/edit.gif" AlternateText="Edit" ResourceKey="cmdEdit" /></asp:HyperLink>
+<div id="divContent" class="WESNet_ContentDejour" runat="server"></div>

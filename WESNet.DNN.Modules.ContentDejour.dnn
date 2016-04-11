@@ -1,0 +1,151 @@
+﻿<dotnetnuke type="Package" version="6.0">
+    <packages>
+        <package name="WESNet_ContentDejour" type="Module" version="08.00.00.02">
+            <friendlyName>Content Dejour</friendlyName>
+            <description>HtmlText module which displays rich text content based upon the current month, day of month or year, day of week, date range, category, profile property value, social group, or start and end timespan.</description>
+            <iconFile>DesktopModules/WESNet_ContentDejour/images/wesnet_contentdejour.png</iconFile>
+            <owner>
+                <name>William Severance, Jr.</name>
+                <organization>WESNet Designs</organization>
+                <url>http://www.wesnetdesigns.com</url>
+                <email>bill@wesnetdesigns.com</email>
+            </owner>
+            <license src="Documentation\License.htm"></license>
+            <releaseNotes src="Documentation\WESNet.DNN.Modules.ContentDejour_08.00.00_ReleaseNotes.htm"></releaseNotes>
+            <dependencies>
+                <dependency type="CoreVersion">08.00.01</dependency>
+            </dependencies>
+            <components>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\WESNet_ContentDejour</basePath>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>04.00.00.SqlDataProvider</name>
+                            <version>04.00.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>04.01.00.SqlDataProvider</name>
+                            <version>04.01.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>04.01.01.SqlDataProvider</name>
+                            <version>04.01.01</version>
+                        </script>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>05.02.00.SqlDataProvider</name>
+                            <version>05.02.00</version>
+                        </script>
+                        <script type="Install">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>06.00.00.SqlDataProvider</name>
+                            <version>06.00.00</version>
+                        </script>
+                        <script type="UnInstall">
+                            <path>Providers\DataProviders\SqlDataProvider</path>
+                            <name>Uninstall.SqlDataProvider</name>
+                            <version>06.00.00</version>
+                        </script>
+                    </scripts>
+                </component>
+                <component type="Module">
+                    <desktopModule>
+                        <moduleName>WESNet_ContentDejour</moduleName>
+                        <foldername>WESNet_ContentDejour</foldername>
+                        <businessControllerClass>WESNet.DNN.Modules.ContentDejour.ContentDejourController</businessControllerClass>
+                        <supportedFeatures>
+                            <supportedFeature type="Portable" />
+                            <supportedFeature type="Searchable" />
+                            <supportedFeature type="Upgradeable" />
+                        </supportedFeatures>
+                        <moduleDefinitions>
+                            <moduleDefinition>
+                                <friendlyName>ContentDejour</friendlyName>
+                                <defaultCacheTime>0</defaultCacheTime>
+                                <moduleControls>
+                                    <moduleControl>
+                                        <controlKey />
+                                        <controlSrc>DesktopModules/WESNet_ContentDejour/ViewContentDejour.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle>Content Dejour</controlTitle>
+                                        <controlType>View</controlType>
+                                        <iconFile />
+                                        <helpUrl />
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Edit</controlKey>
+                                        <controlSrc>DesktopModules/WESNet_ContentDejour/EditContentDejour.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle>Add/Edit ContentDejour</controlTitle>
+                                        <controlType>Edit</controlType>
+                                        <iconFile />
+                                        <helpUrl />
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Settings</controlKey>
+                                        <controlSrc>DesktopModules/WESNet_ContentDejour/Settings.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle>Content Dejour Settings</controlTitle>
+                                        <controlType>Admin</controlType>
+                                        <iconFile />
+                                        <helpUrl />
+                                        <viewOrder>0</viewOrder>
+                                    </moduleControl>
+                                </moduleControls>
+                            </moduleDefinition>
+                        </moduleDefinitions>
+                    </desktopModule>
+                    <eventMessage>
+                        <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
+                        <processorCommand>UpgradeModule</processorCommand>
+                        <attributes>
+                            <businessControllerClass>WESNet.DNN.Modules.ContentDejour.ContentDejourController</businessControllerClass>
+                            <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+                            <upgradeVersionsList>04.00.00,04.01.00,04.01.01,05.01.01,05.02.00</upgradeVersionsList>
+                        </attributes>
+                    </eventMessage>
+                </component>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>WESNet.DNN.Modules.ContentDejour.dll</name>
+                            <version>08.00.00</version>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules/WESNet_ContentDejour</basePath>
+                        <resourceFile>
+                            <name>Resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.web/compilation/codeSubDirectories/add[@directoryName='WESNet_ContentDejour']" action="remove" />
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes />
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
+                <component type="Cleanup" version="06.00.00" fileName="06.00.00.txt" />
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>

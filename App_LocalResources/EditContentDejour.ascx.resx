@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Category.Header" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="cmdPreview.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="Days.Header" xml:space="preserve">
+    <value>Day of Yr/Days of Mo</value>
+  </data>
+  <data name="DaysofWeek.Header" xml:space="preserve">
+    <value>Weekday</value>
+  </data>
+  <data name="Months.Header" xml:space="preserve">
+    <value>Months</value>
+  </data>
+  <data name="plCategory.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="plDay.Help" xml:space="preserve">
+    <value>Days of Month or Day of Year (1-366) or Date Span to be displayed</value>
+  </data>
+  <data name="plDay.Text" xml:space="preserve">
+    <value>Day(s)</value>
+  </data>
+  <data name="plDaysofWeek.Help" xml:space="preserve">
+    <value>One or more days (Sun-Sat) of the week to be displayed</value>
+  </data>
+  <data name="plDaysofWeek.Text" xml:space="preserve">
+    <value>Days of Week</value>
+  </data>
+  <data name="plDisabled.Text" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="plEndTime.Text" xml:space="preserve">
+    <value>Ending At</value>
+  </data>
+  <data name="plMonths.Help" xml:space="preserve">
+    <value>One or more months (1-12) to be displayed. If no month is selected, the Day value will refer to Day of Year rather than Day of Month</value>
+  </data>
+  <data name="plMonths.Text" xml:space="preserve">
+    <value>Months</value>
+  </data>
+  <data name="plStartTime.Text" xml:space="preserve">
+    <value>Starting At</value>
+  </data>
+  <data name="plTimePeriod.Help" xml:space="preserve">
+    <value>When the content is to be displayed for only a portion of a full day, specify both a Starting and Ending Time. Note that these times are specified in the portals time zone but if Enable User Time is checked in the module settings, they will be adjusted to the user's preferred time zone.</value>
+  </data>
+  <data name="plTimePeriod.Text" xml:space="preserve">
+    <value>Time Period</value>
+  </data>
+  <data name="plTitle.Text" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Summary.Header" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="plSummary.Help" xml:space="preserve">
+    <value>Brief summary without HTML markup for search indexing and RSS</value>
+  </data>
+  <data name="plSummary.Text" xml:space="preserve">
+    <value>Search Summary (optional)</value>
+  </data>
+  <data name="Title.Header" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="cmdAdd.Text" xml:space="preserve">
+    <value>Add New Content</value>
+  </data>
+  <data name="cmdFind.Text" xml:space="preserve">
+    <value>Find Contents Matching Above Criteria</value>
+  </data>
+  <data name="cmdReturn.Text" xml:space="preserve">
+    <value>Return to View Mode</value>
+  </data>
+  <data name="CONFIRM_DELETE.Text" xml:space="preserve">
+    <value>Are you sure you wish to delete this content item?</value>
+  </data>
+  <data name="plProfilePropertyValue.Help" xml:space="preserve">
+    <value>Select the value of the user profile property for which this content will be displayed. Alternatively, you may indicate if the content is to be shown if the user is unauthenticated or the property has not been specified in his profile and no default value has been set in the profile property definition. Note that the desired profile property name upon which this module display will depend must first be set in the module Settings.</value>
+  </data>
+  <data name="ProfilePropertyValue.Header" xml:space="preserve">
+    <value>Profile Property Value</value>
+  </data>
+  <data name="plProfilePropertyValueDefault.Text" xml:space="preserve">
+    <value>Show This Content When Profile Property Not Specified For The User And No Default Has Been Set</value>
+  </data>
+  <data name="plProfilePropertyValueUnauthenticated.Text" xml:space="preserve">
+    <value>Show This Content When User Is Unauthenticated</value>
+  </data>
+  <data name="plCategory.Help" xml:space="preserve">
+    <value>Select the category for which this content will be displayed. Categories may be defined and updated and a selection made from the category list in the module settings.</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
+    <value>Edit or Create New Contents</value>
+  </data>
+  <data name="plProfilePropertyValue.Text" xml:space="preserve">
+    <value>Profile Property</value>
+  </data>
+  <data name="plDisabled.Help" xml:space="preserve">
+    <value>Check this box to temporarily disable this content item.</value>
+  </data>
+  <data name="plDayofYear.Text" xml:space="preserve">
+    <value>Day of Year</value>
+  </data>
+  <data name="plDaysofMonth.Text" xml:space="preserve">
+    <value>Days of Month</value>
+  </data>
+  <data name="btnClearAllMonths.Text" xml:space="preserve">
+    <value>Clear All Months</value>
+  </data>
+  <data name="btnSelectAllMonths.Text" xml:space="preserve">
+    <value>Select All Months</value>
+  </data>
+  <data name="btnClearAllDays.Text" xml:space="preserve">
+    <value>Clear All Days</value>
+  </data>
+  <data name="btnSelectAllDays.Text" xml:space="preserve">
+    <value>Select All Days</value>
+  </data>
+  <data name="btnClearAllDaysofWeek.Text" xml:space="preserve">
+    <value>Clear All Days of Week</value>
+  </data>
+  <data name="btnSelectAllDaysofWeek.Text" xml:space="preserve">
+    <value>Select All Days of Week</value>
+  </data>
+  <data name="ModuleHelp.Text" xml:space="preserve">
+    <value>All dates and times will considered to be those of the Portal UNLESS 'Enable User Time Conversion' is checked in the module configuration in which case, dates and times will will be adjusted to those of the currently logged in user for the purposes of selecting content for viewing.</value>
+  </data>
+  <data name="TimePeriod.Header" xml:space="preserve">
+    <value>Time Period</value>
+  </data>
+  <data name="plDateSpan.Help" xml:space="preserve">
+    <value>When the content is to be displayed for a consecutive range of dates, specify both a Starting and Ending Date.</value>
+  </data>
+  <data name="plDateSpan.Text" xml:space="preserve">
+    <value>Date Span</value>
+  </data>
+  <data name="plEndDate.Text" xml:space="preserve">
+    <value>Ending On</value>
+  </data>
+  <data name="plStartDate.Text" xml:space="preserve">
+    <value>Starting On</value>
+  </data>
+  <data name="cbIgnoreYear.Help" xml:space="preserve">
+    <value>When checked, year value is ignored during comparisons. In such case, the date span can be no longer than one year.</value>
+  </data>
+  <data name="plIgnoreYear.Text" xml:space="preserve">
+    <value>Ignore Year</value>
+  </data>
+  <data name="valEndDate.Error" xml:space="preserve">
+    <value>Invalid Ending Date</value>
+  </data>
+  <data name="valStartDate.Error" xml:space="preserve">
+    <value>Invalid Starting Date</value>
+  </data>
+  <data name="plTitle.Help" xml:space="preserve">
+    <value>When enabled in module settings this item specific title will replace the module's title. You may include the same tokens in the title text as in the content.</value>
+  </data>
+  <data name="plGroup.Help" xml:space="preserve">
+    <value>When the Content Dejour module is placed upon a page containing the DNN Social Groups module, you may optionally specify a Group for which different content may be shown. Leave as &lt;None Selected&gt; when the content should not vary by Social Group.</value>
+  </data>
+  <data name="plGroup.Text" xml:space="preserve">
+    <value>Social Group</value>
+  </data>
+  <data name="GroupName.Header" xml:space="preserve">
+    <value>Group</value>
+  </data>
+</root>

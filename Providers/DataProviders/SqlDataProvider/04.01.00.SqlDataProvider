@@ -1,0 +1,284 @@
+﻿/******************************************************************************/
+/*************************** SqlDataProvider Script ***************************/
+/*************************  04.01.00.SQLDataProvider **************************/
+/*************** WESNet_ContentDejour Version 04.01.00 Update *****************/
+/******************************************************************************/
+
+/****** Remove obsolete Stored Procedures ***********/
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetDays]    Script Date: 01/18/2009 21:17:42 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetDays]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetDays]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetDaysOfWeek]    Script Date: 01/18/2009 21:17:42 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetDaysOfWeek]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetDaysOfWeek]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetMonths]    Script Date: 01/18/2009 21:17:42 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetMonths]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetMonths]
+GO
+
+/****** Modify ContentDejour table to alter DayofWeek and Month columns and add ProfilePropertyValue column ******/
+
+/****** Object:  Table {databaseOwner}[{objectQualifier}WESNet_ContentDejour]    Script Date: 1/18/2009 20:04:52 ******/
+ALTER TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+	ADD [ProfilePropertyValue] [nvarchar](3750) NULL
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND name = N'IX_WESNet_ContentDejour_DayofWeek')
+DROP INDEX {databaseOwner}[{objectQualifier}WESNet_ContentDejour].[IX_WESNet_ContentDejour_DayofWeek]
+GO
+
+EXEC sp_rename '{databaseOwner}[{objectQualifier}WESNet_ContentDejour].DayofWeek', 'DaysofWeek', 'COLUMN'
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+   ALTER COLUMN DaysofWeek tinyint NULL
+GO
+
+CREATE NONCLUSTERED INDEX [IX_WESNet_ContentDejour_DaysofWeek (Non-Unique, Non-Clustered)] ON {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+(
+	DaysofWeek DESC
+)
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND name = N'IX_WESNet_ContentDejour_Month')
+DROP INDEX {databaseOwner}[{objectQualifier}WESNet_ContentDejour].[IX_WESNet_ContentDejour_Month]
+GO
+
+EXEC sp_rename '{databaseOwner}[{objectQualifier}WESNet_ContentDejour].Month', 'Months', 'COLUMN'
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+   ALTER COLUMN Months smallint NULL
+GO
+
+CREATE NONCLUSTERED INDEX [IX_WESNet_ContentDejour_Months (Non-Unique, Non-Clustered)] ON {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+(
+	Months DESC
+)
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND name = N'IX_WESNet_ContentDejour_Day')
+DROP INDEX {databaseOwner}[{objectQualifier}WESNet_ContentDejour].[IX_WESNet_ContentDejour_Day]
+GO
+
+EXEC sp_rename '{databaseOwner}[{objectQualifier}WESNet_ContentDejour].Day', 'Days', 'COLUMN'
+GO
+
+CREATE NONCLUSTERED INDEX [IX_WESNet_ContentDejour_Days (Non-Unique, Non-Clustered)] ON {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+(
+	Days DESC
+)
+GO
+
+/****** Modify ContentDejour table to add non-clustered index on ModuleId column ******/
+IF NOT EXISTS (SELECT * FROM dbo.sysindexes WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour]') AND name = N'IX_WESNet_ContentDejour_ModuleId')
+CREATE NONCLUSTERED INDEX [IX_WESNet_ContentDejour_ModuleId (Non-Unique, Non-Clustered)] ON {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+(
+	ModuleId ASC
+)
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]    Script Date: 11/25/2008 16:03:57 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]    Script Date: 04/12/2009 22:08:18 ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]
+
+	@ModuleId       			int,
+	@Months						smallint,
+	@Days						int,
+	@DaysofWeek					tinyint,
+	@StartTime					int,
+	@EndTime					int,
+	@CategoryID					int,
+	@ProfilePropertyValue		nvarchar(3750),
+	@Disabled					bit,
+	@Title						nvarchar(255),
+	@DesktopHtml    			ntext,
+	@DesktopSummary 			ntext,
+	@UserID         			int
+
+AS
+
+INSERT INTO {objectQualifier}WESNet_ContentDejour (
+	ModuleId,
+	Months,
+	Days,
+	DaysofWeek,
+	StartTime,
+	EndTime,
+	CategoryID,
+	ProfilePropertyValue,
+	[Disabled],
+	Title,
+	DesktopHtml,
+	DesktopSummary,
+	CreatedByUser,
+	CreatedDate
+) 
+VALUES (
+	@ModuleId,
+	@Months,
+	@Days,
+	@DaysofWeek,
+	@StartTime,
+	@EndTime,
+	@CategoryID,
+	@ProfilePropertyValue,
+	@Disabled,
+	@Title,
+	@DesktopHtml,
+	@DesktopSummary,
+	@UserID,
+	getdate()
+)
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]    Script Date: 04/22/2009 21:55:33 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]    Script Date: 04/22/2009 21:55:33 ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+
+	@ModuleID 				int,
+	@Months					smallint,
+	@Days 					int,
+	@DaysofWeek 			tinyint,
+	@Time					int,
+	@CategoryID 			int,
+	@ProfilePropertyValue 	nvarchar(3750),
+	@IncludeDisabled 		bit
+
+AS
+
+SELECT S.*, C.Category
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+WHERE  S.ModuleID = @ModuleID AND
+	   ((@Months is null) OR ((Months is null) or ((Months & @Months) <> 0))) AND
+	   ((@Days is null) OR ((Days is null) OR ((Days = @Days) OR ((Days & @Days) <> 0)))) AND
+	   ((@DaysofWeek is null) OR ((DaysofWeek is null) or ((DaysofWeek & @DaysofWeek) <> 0))) AND
+       ((@Time is null) OR (((StartTime is null) or (@Time >= StartTime)) AND ((EndTime is null) or (@Time <=EndTime)))) AND
+	   ((@CategoryID is null) OR ((S.CategoryID is null) or (S.CategoryID=@CategoryID))) AND
+	   ((@ProfilePropertyValue is null) OR ((ProfilePropertyValue is null) or (ProfilePropertyValue = @ProfilePropertyValue))) AND
+	   ((@IncludeDisabled = 1) OR ([Disabled]=0))
+ORDER BY Months DESC, Days DESC, DaysofWeek DESC, StartTime
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]    Script Date: 04/22/2009 21:55:33 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]    Script Date: 04/22/2009 21:55:33 ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]
+
+	@ModuleID 				int,
+	@Months					smallint,
+	@Days 					int,
+	@DaysofWeek 			tinyint,
+	@StartTime				int,
+	@EndTime				int,
+	@CategoryID 			int,
+	@ProfilePropertyValue 	nvarchar(3750),
+	@IncludeDisabled 		bit
+
+AS
+
+SELECT S.*, C.Category
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+WHERE  S.ModuleID = @ModuleID AND
+	   ((@Months is null) OR ((Months is null) or ((Months & @Months) <> 0))) AND
+	   ((@Days is null) OR ((Days is null) OR ((Days = @Days) OR ((Days & @Days) <> 0)))) AND
+	   ((@DaysofWeek is null) OR ((DaysofWeek is null) or ((DaysofWeek & @DaysofWeek) <> 0))) AND
+       ((@StartTime is null) OR ((StartTime is null) or (@StartTime <= StartTime))) AND
+	   ((@EndTime is null) OR ((EndTime is null) or (@EndTime >= EndTime))) AND
+	   ((@CategoryID is null) OR ((S.CategoryID is null) or (S.CategoryID=@CategoryID))) AND
+	   ((@ProfilePropertyValue is null) OR ((ProfilePropertyValue is null) or (ProfilePropertyValue = @ProfilePropertyValue))) AND
+	   ((@IncludeDisabled = 1) OR ([Disabled]=0))
+ORDER BY Months DESC, Days DESC, DaysofWeek DESC, StartTime
+GO
+
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]    Script Date: 11/25/2008 16:03:57 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]    Script Date: 04/12/2009 22:08:20 ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]
+
+	@KeyId					int,
+	@Months					smallint,
+	@Days					int,
+	@DaysofWeek				tinyint,
+	@StartTime				int,
+	@EndTime				int,
+	@CategoryID				int,
+	@ProfilePropertyValue	nvarchar(3750),
+	@Disabled				bit,
+	@Title					nvarchar(255),
+	@DesktopHtml    		ntext,
+	@DesktopSummary 		ntext,
+	@UserID         		int
+
+AS
+
+UPDATE {objectQualifier}WESNet_ContentDejour
+SET
+	Months = @Months,
+	Days = @Days,
+	DaysofWeek = @DaysofWeek,
+	StartTime = @StartTime,
+	EndTime = @EndTime,
+	CategoryID = @CategoryID,
+	ProfilePropertyValue = @ProfilePropertyValue,
+	[Disabled] = @Disabled,
+	Title = @Title,
+	DesktopHtml = @DesktopHtml,
+    DesktopSummary = @DesktopSummary,
+    CreatedByUser  = @UserID,
+    CreatedDate    = getdate()
+WHERE KeyId = @KeyId
+GO
+
+/******* Update values (0-6) in DaysofWeek Column to their bitmapped tinyint representation. *********/
+
+UPDATE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+SET
+  DaysofWeek = POWER(2,(6-DaysOfWeek))
+WHERE DaysofWeek is not null
+GO
+
+/******* Update values (1-12) in Months Column to their bitmapped smallint representation. *********/
+
+UPDATE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+SET
+  Months = POWER(2,(13-Months))
+WHERE Months is not null
+GO
+
+/******* Update values (1-31 or 1-366) in Days Column to their bitmapped int representation. *********/
+
+UPDATE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+SET
+  Days = POWER(2,(31-Days))
+WHERE (Months is not null) And (Days >= 1) And (Days <=31)
+GO
+
+UPDATE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+SET
+  Days = (Days | 0x80000000 )
+WHERE (Months is null) And (Days >= 0)
+GO

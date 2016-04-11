@@ -1,0 +1,73 @@
+﻿/******************************************************************************/
+/*************************** SqlDataProvider Script ***************************/
+/*************************  04.01.01.SQLDataProvider **************************/
+/*************** WESNet_ContentDejour Version 04.01.01 Update *****************/
+/******************************************************************************/
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]    Script Date: 04/22/2009 21:55:33 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]    Script Date: 06/05/2009 13:42:20 ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+
+	@ModuleID 			int,
+	@Months				smallint,
+	@Days 				int,
+	@DaysofWeek 			tinyint,
+	@Time				int,
+	@CategoryID 			int,
+	@ProfilePropertyValue 		nvarchar(3750),
+	@IncludeDisabled 		bit
+
+AS
+
+SELECT S.*, C.Category
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+WHERE  S.ModuleID = @ModuleID AND
+	   ((@Months is null) OR ((Months is null) or ((Months & @Months) <> 0))) AND
+	   ((@Days is null) OR ((Days is null) OR ((Days = @Days) OR ((@Days > 0 AND (Days & @Days) <> 0))))) AND
+	   ((@DaysofWeek is null) OR ((DaysofWeek is null) or ((DaysofWeek & @DaysofWeek) <> 0))) AND
+       ((@Time is null) OR (((StartTime is null) or (@Time >= StartTime)) AND ((EndTime is null) or (@Time <=EndTime)))) AND
+	   ((@CategoryID is null) OR ((S.CategoryID is null) or (S.CategoryID=@CategoryID))) AND
+	   ((@ProfilePropertyValue is null) OR ((ProfilePropertyValue is null) or (ProfilePropertyValue = @ProfilePropertyValue))) AND
+	   ((@IncludeDisabled = 1) OR ([Disabled]=0))
+ORDER BY Months DESC, Days DESC, DaysofWeek DESC, StartTime
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]    Script Date: 04/22/2009 21:55:33 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]
+GO
+
+/****** Object:  StoredProcedure {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]    Script Date: 04/22/2009 21:55:33 ******/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]
+
+	@ModuleID 			int,
+	@Months				smallint,
+	@Days 				int,
+	@DaysofWeek 			tinyint,
+	@StartTime			int,
+	@EndTime			int,
+	@CategoryID 			int,
+	@ProfilePropertyValue 		nvarchar(3750),
+	@IncludeDisabled 		bit
+
+AS
+
+SELECT S.*, C.Category
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+WHERE  S.ModuleID = @ModuleID AND
+	   ((@Months is null) OR ((Months is null) or ((Months & @Months) <> 0))) AND
+	   ((@Days is null) OR ((Days is null) OR ((Days = @Days) OR ((@Days > 0 AND (Days & @Days) <> 0))))) AND
+	   ((@DaysofWeek is null) OR ((DaysofWeek is null) or ((DaysofWeek & @DaysofWeek) <> 0))) AND
+       ((@StartTime is null) OR ((StartTime is null) or (@StartTime <= StartTime))) AND
+	   ((@EndTime is null) OR ((EndTime is null) or (@EndTime >= EndTime))) AND
+	   ((@CategoryID is null) OR ((S.CategoryID is null) or (S.CategoryID=@CategoryID))) AND
+	   ((@ProfilePropertyValue is null) OR ((ProfilePropertyValue is null) or (ProfilePropertyValue = @ProfilePropertyValue))) AND
+	   ((@IncludeDisabled = 1) OR ([Disabled]=0))
+ORDER BY Months DESC, Days DESC, DaysofWeek DESC, StartTime
+GO

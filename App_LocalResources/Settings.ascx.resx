@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Category.Header" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="CategoryEditor.Text" xml:space="preserve">
+    <value>Category Editor</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve">
+    <value>Content Dejour Settings</value>
+  </data>
+  <data name="GeneralSettings.Text" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="GenralSettings.Text" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="plCategory.Help" xml:space="preserve">
+    <value>If categories of contents have been created, the content displayed may also be selected upon its category.</value>
+  </data>
+  <data name="plCategory.Text" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="plEnableUserTimeConversion.Help" xml:space="preserve">
+    <value>When checked, system date/time values are converted to that of the preferred time zone specified in the user's profile or that of the portal if the user is unauthenticated. When possible this conversion takes into account observance of Daylight Savings Time in the user's time zone.</value>
+  </data>
+  <data name="plEnableUserTimeConversion.Text" xml:space="preserve">
+    <value>Enable User Time Conversion</value>
+  </data>
+  <data name="plHideWhenNoContent.Help" xml:space="preserve">
+    <value>When checked (default) hides the module when there is no content for the current month, day, day of week, and/or category.</value>
+  </data>
+  <data name="plHideWhenNoContent.Text" xml:space="preserve">
+    <value>Hide When No Content</value>
+  </data>
+  <data name="plIncludeDisabled.Help" xml:space="preserve">
+    <value>Individual content items may be marked as disabled and will not normally be selected for display. Checking this box overrides individually disabled contents so that they can be shown.</value>
+  </data>
+  <data name="plIncludeDisabled.Text" xml:space="preserve">
+    <value>Include Disabled</value>
+  </data>
+  <data name="plInterval.Help" xml:space="preserve">
+    <value>Time interval (in minutes) used when generating values in the drop-down listboxes for a content item's Start Time and End Time. Range is integer 0 through 60.</value>
+  </data>
+  <data name="plInterval.Text" xml:space="preserve">
+    <value>Time Interval</value>
+  </data>
+  <data name="plMultipleHandling.Help" xml:space="preserve">
+    <value>Means by which multiple content items meeting the above primary selection criterial will be chosen for display. For example, if there are 5 content items for March 10, you could choose that they be shown in random order with each visit. Sequential and Least Viewed handling is determined by a cookie placed on the client computer.</value>
+  </data>
+  <data name="plMultipleHandling.Text" xml:space="preserve">
+    <value>Handle Multiples</value>
+  </data>
+  <data name="plProfilePropertyName.Help" xml:space="preserve">
+    <value>Select the name of a user profile property upon which the choice of content to be displayed will be based.</value>
+  </data>
+  <data name="plProfilePropertyName.Text" xml:space="preserve">
+    <value>Profile Property Name</value>
+  </data>
+  <data name="plReplaceTitle.Help" xml:space="preserve">
+    <value>When checked, the module title will change to reflect the title of the currently displayed content item.</value>
+  </data>
+  <data name="plReplaceTitle.Text" xml:space="preserve">
+    <value>Replace Module Title</value>
+  </data>
+  <data name="plReplaceTokens.Help" xml:space="preserve">
+    <value>When checked replace tokens like "[object:property|format]" for objects Tab, Module, PortalSettings, User and Content with the appropriate environment or Content Dejour property values.&lt;br /&gt;
+        Note: Module caching will be disabled, if token replacement is enabled.</value>
+  </data>
+  <data name="plReplaceTokens.Text" xml:space="preserve">
+    <value>Replace Tokens</value>
+  </data>
+  <data name="plSelectBy.Help" xml:space="preserve">
+    <value>Primary means by which the module will select which content item to display on each visit to the page.</value>
+  </data>
+  <data name="plSelectBy.Text" xml:space="preserve">
+    <value>Select By</value>
+  </data>
+  <data name="valNumericInterval.ErrorMessage" xml:space="preserve">
+    <value>The Time Interval must be an integer ranging from 1 through 60 minutes.</value>
+  </data>
+</root>

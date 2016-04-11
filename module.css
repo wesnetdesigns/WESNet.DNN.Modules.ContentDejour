@@ -1,0 +1,194 @@
+﻿div.WESNet_ContentDejour
+{
+    width: 100%;
+}
+
+.WESNet_ContentDejour div.CommandButtons
+{
+    text-align: left;
+    width: 100%;
+}
+
+.WESNet_ContentDejour div.CommandButtons input
+{
+    margin-left: 0px;
+    margin-right: 8px;
+}
+
+.WESNet_ContentDejour div.Months,
+.WESNet_ContentDejour div.DaysOfMonth,
+.WESNet_ContentDejour div.DaysOfYear,
+.WESNet_ContentDejour div.DateSpan,
+.WESNet_ContentDejour div.DaysOfWeek
+{
+    margin-left: 36.5%;
+    width: 67%;
+    text-align: left;
+    margin-bottom: 6px;
+}
+
+.WESNet_ContentDejour div.DaysOfMonth,
+.WESNet_ContentDejour div.DaysOfYear,
+.WESNet_ContentDejour div.DateSpan
+{
+    float: left;
+}
+
+.WESNet_ContentDejour div.DateSpan input
+{
+    float: none;
+    margin-bottom: 5px;
+}
+
+.WESNet_ContentDejour div.DateSpan > span
+{
+    width: 15%;
+    padding-right: 4px;
+    text-align: right;
+    display: inline-block;
+}
+
+.WESNet_ContentDejour input.jQDatePicker, input.WESNet_FRBO .jQSpinner
+{
+    width: 100px !important;
+    text-align: right;
+    font-family: Courier New, Courier, monospace;
+}
+
+div.WESNet_ContentDejour span.ui-spinner {
+    padding-right: 0;
+    margin-right: 2px;
+}
+
+div.WESNet_ContentDejour input.ui-spinner-input {
+    padding: 8px;
+    margin-top: 0;
+    margin-right: 20px;
+    margin-bottom: 0;
+    margin-left: 0;
+    text-align:right;
+    width: 90px!important;
+}
+
+.WESNet_ContentDejour .dnnForm input[type=checkbox] + label,
+.WESNet_ContentDejour .dnnForm input[type=radio] + label
+{
+    text-align: left;
+    margin-top: -3px;
+}
+
+.WESNet_ContentDejour select.narrowField, .WESNet_ContentDejour input.narrowField
+{
+    width: 100px!important;
+}
+
+.WESNet_ContentDejour .dnnGrid
+{
+    margin-top: 15px;
+    width: 100%;
+}
+
+.WESNet_ContentDejour .dnnGridHeader td
+{
+    font-size: 0.9em;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+    .WESNet_ContentDejour .dnnGridHeader span.sortIndex
+    {
+        font-size: 0.9em;
+        vertical-align: super;
+        font-style: italic;
+    }
+
+    .WESNet_ContentDejour .dnnGridHeader img
+    {
+        height: 10px;
+        width: 11px;
+    }
+
+.WESNet_ContentDejour .dnnGridPager
+{
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.WESNet_ContentDejour .dnnTextEditor
+{
+    width: 100%;
+}
+
+.WESNet_ContentDejour .dnnTextEditor div.dnnFormItem
+{
+    padding-left: 0px;
+}
+
+.WESNet_ContentDejour .dnnTextEditor label
+{
+    text-align: right;
+}
+
+.WESNet_ContentDejour .WESNet_Edit textarea
+{
+    width: 90%;
+}
+
+.WESNet_ContentDejour_CategoryEditor .ItemNumber
+{
+    font-weight: bold;
+    width: 20px;
+    text-align: right;
+    padding-right: 4px;
+}
+
+.WESNet_ContentDejour_CategoryEditor .CommandField
+{
+    padding-left: 2px;
+    padding-right: 2px;
+    text-align: left;
+    width: 48px;
+}
+
+.WESNet_ContentDejour_CategoryEditor .CommandField input[type=image]
+{
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.WESNet_ContentDejour_CategoryEditor .Category
+{
+    width: 60%;
+    text-align: left;
+}
+
+.WESNet_ContentDejour_CategoryEditor table
+{
+    border-bottom: 1px solid gray;
+    margin-bottom: 6px;
+}
+
+.WESNet_ContentDejour_CategoryEditor th
+{
+    text-align: left;
+}
+
+.WESNet_ContentDejour_CategoryEditor tr
+{
+    height: 20px;
+}
+
+.WESNet_ContentDejour_CategoryEditor a
+{
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 26px;
+}
+    
+    
+
+
+
+

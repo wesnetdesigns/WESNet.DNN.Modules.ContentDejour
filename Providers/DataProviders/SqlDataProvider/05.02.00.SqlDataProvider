@@ -1,0 +1,414 @@
+﻿/******************************************************************************/
+/*************************** SqlDataProvider Script ***************************/
+/*************************  05.02.00.SQLDataProvider **************************/
+/*************** WESNet_ContentDejour Version 05.02.00 Update *****************/
+/******************************************************************************/
+
+/* Add PortalID and ContentItemID to WESNet_ContentDejour Table to support ContentItems, Taxonomy, etc. */
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='PortalID')
+     ALTER TABLE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+      ADD PortalID int NOT NULL DEFAULT ((-1))
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='ContentItemID')
+     ALTER TABLE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+        ADD ContentItemID int NULL
+
+     ALTER TABLE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+        ADD CONSTRAINT FK_{objectQualifier}WESNet_ContentDejour_{objectQualifier}ContentItems
+            FOREIGN KEY ( [ContentItemID] ) REFERENCES {databaseOwner}{objectQualifier}ContentItems ( [ContentItemID] ) ON DELETE CASCADE
+            ON UPDATE CASCADE
+GO
+
+/* Add standard audit columns to WESNet_ContentDejour Table and transfer existing data */
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='CreatedByUserID')
+    EXEC sp_rename '{databaseOwner}{objectQualifier}WESNet_ContentDejour.CreatedByUser', 'CreatedByUserID', 'COLUMN';
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='CreatedOnDate')
+ EXEC sp_rename '{databaseOwner}{objectQualifier}WESNet_ContentDejour.CreatedDate', 'CreatedOnDate', 'COLUMN';
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='LastModifiedByUserID')
+     ALTER TABLE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+      ADD LastModifiedByUserID int NULL
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='LastModifiedOnDate')
+    ALTER TABLE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+      ADD LastModifiedOnDate datetime NULL
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='LastModifiedByUserID') AND
+   NOT EXISTS (SELECT LastModifiedByUserID FROM {databaseOwner}[{objectQualifier}WESNet_ContentDeJour] WHERE LastModifiedByUserID is not null)
+    UPDATE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+      SET
+        LastModifiedByUserID = CreatedByUserID
+GO
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='LastModifiedOnDate') AND
+  NOT EXISTS (SELECT LastModifiedOnDate FROM {databaseOwner}[{objectQualifier}WESNet_ContentDeJour] WHERE LastModifiedOnDate is not null)
+    UPDATE {databaseOwner}[{objectQualifier}WESNet_ContentDejour]
+      SET
+        LastModifiedOnDate = CreatedOnDate
+GO
+
+/* Add new columns StartDate and EndDate to WESNet_ContentDejour table */
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='StartDate')
+    ALTER TABLE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+      ADD StartDate int NULL
+GO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns
+               WHERE TABLE_NAME='{objectQualifier}WESNet_ContentDejour'
+                     AND COLUMN_NAME='EndDate')
+    ALTER TABLE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+      ADD EndDate int NULL
+GO
+ 
+/* Update stored procedure WESNet_AddContent to handle PortalID and added standard audit and StartDate/EndDate columns */
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_AddContent]
+
+	@ModuleId       		int,
+    @PortalID               int,
+	@Months					smallint,
+	@Days					int,
+	@DaysofWeek				tinyint,
+    @StartDate              int,
+    @EndDate                int,
+	@StartTime				int,
+	@EndTime				int,
+	@CategoryID				int,
+	@ProfilePropertyValue	nvarchar(3750),
+	@Disabled				bit,
+	@Title					nvarchar(255),
+	@DesktopHtml    		ntext,
+	@DesktopSummary 		ntext,
+	@UserID         		int
+
+AS
+
+BEGIN
+    INSERT INTO {objectQualifier}WESNet_ContentDejour (
+	    ModuleId,
+        PortalID,
+	    Months,
+	    Days,
+	    DaysofWeek,
+        StartDate,
+        EndDate,
+	    StartTime,
+	    EndTime,
+	    CategoryID,
+	    ProfilePropertyValue,
+	    [Disabled],
+	    Title,
+	    DesktopHtml,
+	    DesktopSummary,
+	    CreatedByUserId,
+	    CreatedOnDate,
+        LastModifiedByUserId,
+        LastModifiedOnDate
+    ) 
+    VALUES (
+	    @ModuleId,
+        @PortalID,
+	    @Months,
+	    @Days,
+	    @DaysofWeek,
+        @StartDate,
+        @EndDate,
+	    @StartTime,
+	    @EndTime,
+	    @CategoryID,
+	    @ProfilePropertyValue,
+	    @Disabled,
+	    @Title,
+	    @DesktopHtml,
+	    @DesktopSummary,
+	    @UserID,
+	    getdate(),
+        @UserID,
+        getdate()
+    )
+
+    SELECT Scope_Identity()
+END
+
+GO
+
+/* Update stored procedure WESNet_ContentDejour_UpdateContent to handle added standard audit and StartDate/EndDate columns */
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_UpdateContent]
+
+	@KeyId					int,
+    @ModuleID               int,
+    @PortalID               int,
+    @ContentItemID          int,
+	@Months					smallint,
+	@Days					int,
+	@DaysofWeek				tinyint,
+    @StartDate              int,
+    @EndDate                int,
+	@StartTime				int,
+	@EndTime				int,
+	@CategoryID				int,
+	@ProfilePropertyValue	nvarchar(3750),
+	@Disabled				bit,
+	@Title					nvarchar(255),
+	@DesktopHtml    		ntext,
+	@DesktopSummary 		ntext,
+	@UserID         		int
+
+AS
+
+UPDATE {objectQualifier}WESNet_ContentDejour
+SET
+    ModuleID=@ModuleID,
+    PortalID=@PortalID,
+    ContentItemID=@ContentItemID,
+	Months = @Months,
+	Days = @Days,
+	DaysofWeek = @DaysofWeek,
+    StartDate=@StartDate,
+    EndDate=@EndDate,
+	StartTime = @StartTime,
+	EndTime = @EndTime,
+	CategoryID = @CategoryID,
+	ProfilePropertyValue = @ProfilePropertyValue,
+	[Disabled] = @Disabled,
+	Title = @Title,
+	DesktopHtml = @DesktopHtml,
+    DesktopSummary = @DesktopSummary,
+    LastModifiedByUserId = @UserID,
+    LastModifiedOnDate = getdate()
+WHERE KeyId = @KeyId
+GO
+
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_LinkContentItem]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+      DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_LinkContentItem]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_LinkContentItem]
+
+	@KeyId					int,
+    @ContentItemID          int
+
+AS
+    UPDATE {databaseOwner}{objectQualifier}WESNet_ContentDejour
+    SET
+        ContentItemID = @ContentItemID
+    WHERE
+        KeyId = @KeyId
+GO
+
+/* Create new user defined function WESNet_ContentDejour_IsBetween */
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_IsBetween]')
+      AND xtype=N'FN')
+DROP FUNCTION {databaseOwner}[{objectQualifier}WESNet_ContentDejour_IsBetween]
+GO
+
+CREATE FUNCTION {databaseOwner}[{objectQualifier}WESNet_ContentDejour_IsBetween]
+    (@Value0 int,
+     @Value1 int,
+     @Value2 int)
+
+     RETURNS bit
+AS
+    BEGIN
+        DECLARE @YearMask int
+	    DECLARE @YearShift int
+	    DECLARE @MonthMask int
+	    DECLARE @MonthShift int
+	    DECLARE @DayMask int
+        DECLARE @MonthDayMask int
+
+	    DECLARE @Year0 int
+        DECLARE @Year1 int
+        DECLARE @Year2 int
+
+	    DECLARE @IsLeapYear bit
+        DECLARE @IgnoreYear bit
+	
+	    SET @YearMask = 0x7FFE00
+	    SET @YearShift = 0x200
+	    SET @MonthMask = 0x1E0
+	    SET @MonthShift = 0x20
+	    SET @DayMask = 0x1F
+        SET @MonthDayMask = 0x1FF
+
+	    SET @Year0 = (@Value0 & @YearMask) * @YearShift
+        SET @Year1 = (@Value1 & @YearMask) * @YearShift
+        SET @Year2 = (@Value2 & @YearMask) * @YearShift
+	
+	    IF (((@Year0 % 4 = 0) AND (@Year0 % 100 != 0)) OR (@Year0 % 400 = 0))
+	       SET @IsLeapYear = 1
+	    ELSE
+	       SET @IsLeapYear = 0
+
+        IF ((@Year0=0) OR (@Year1=0) OR (@Year2=0))
+           SET @IgnoreYear = 1
+        ELSE
+           SET @IgnoreYear = 0
+
+        IF @IgnoreYear = 1	
+	      BEGIN
+            SET @Value0 = @Value0 & @MonthDayMask
+            SET @Value1 = @Value1 & @MonthDayMask
+            SET @Value2 = @Value2 & @MonthDayMask
+          END
+        
+	    DECLARE @Result bit
+	
+	    IF (@Value1 < @Value2)
+ 	       SET @Result = CASE WHEN ((@Value0>=@Value1) AND (@Value0<=@Value2)) THEN 1 ELSE 0 END
+	    ELSE
+	       SET @Result = CASE WHEN ((@Value0>=@Value1) OR (@Value0<=@Value2)) THEN 1 ELSE 0 END
+	
+	    RETURN @Result
+    END
+GO
+
+/* Update stored procedure WESNet_ContentDejour_UpdateContent to handle ContentItems and selection by Date Span */
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContents]
+
+	@ModuleID 			    int,
+	@Months				    smallint,
+	@Days 				    int,
+	@DaysofWeek 		    tinyint,
+	@Today				    int,
+    @Time                   int,
+	@CategoryID 			int,
+	@ProfilePropertyValue 	nvarchar(3750),
+	@IncludeDisabled 		bit
+
+AS
+
+SELECT
+    S.*,
+    C.Category,
+    CI.ContentItemID,
+    CI.Content,
+    CI.ContentTypeID,
+    CI.TabiD,
+    CI.ContentKey,
+    CI.Indexed
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON S.ContentItemId = CI.ContentItemID
+WHERE  S.ModuleID = @ModuleID AND
+	   ((@Months is null) OR ((Months is null) or ((Months & @Months) <> 0))) AND
+	   ((@Days is null) OR ((Days is null) OR ((Days = @Days) OR ((@Days > 0 AND (Days & @Days) <> 0))))) AND
+	   ((@DaysofWeek is null) OR ((DaysofWeek is null) or ((DaysofWeek & @DaysofWeek) <> 0))) AND
+       ((@Today is null) OR ({databaseOwner}{objectQualifier}WESNet_ContentDejour_IsBetween(@Today, StartDate, EndDate)=1)) AND
+       ((@Time is null) OR (((StartTime is null) or (@Time >= StartTime)) AND ((EndTime is null) or (@Time <=EndTime)))) AND
+	   ((@CategoryID is null) OR ((S.CategoryID is null) or (S.CategoryID=@CategoryID))) AND
+	   ((@ProfilePropertyValue is null) OR ((ProfilePropertyValue is null) or (ProfilePropertyValue = @ProfilePropertyValue))) AND
+	   ((@IncludeDisabled = 1) OR ([Disabled]=0))
+ORDER BY Months DESC, Days DESC, DaysofWeek DESC, StartDate, StartTime
+GO
+
+/* Update stored procedure WESNet_ContentDejour_FindContents to handle selection by Date Span */
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_FindContents]
+
+	@ModuleID 			    int,
+	@Months				    smallint,
+	@Days 				    int,
+	@DaysofWeek 			tinyint,
+    @StartDate              int,
+    @EndDate                int,
+	@StartTime			    int,
+	@EndTime			    int,
+	@CategoryID 			int,
+	@ProfilePropertyValue 	nvarchar(3750),
+	@IncludeDisabled 		bit
+
+AS
+
+SELECT
+    S.*,
+    C.Category,
+    CI.ContentItemID,
+    CI.Content,
+    CI.ContentTypeID,
+    CI.TabiD,
+    CI.ContentKey,
+    CI.Indexed
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON S.ContentItemId = CI.ContentItemID
+WHERE  S.ModuleID = @ModuleID AND
+	   ((@Months is null) OR ((Months is null) or ((Months & @Months) <> 0))) AND
+	   ((@Days is null) OR ((Days is null) OR ((Days = @Days) OR ((@Days > 0 AND (Days & @Days) <> 0))))) AND
+	   ((@DaysofWeek is null) OR ((DaysofWeek is null) or ((DaysofWeek & @DaysofWeek) <> 0))) AND
+       ((@StartDate is null) OR ((StartDate is null) or (@StartDate <= StartDate))) AND
+       ((@EndDate is null) OR ((EndDate is null) or (@EndDate >= EndDate))) AND
+       ((@StartTime is null) OR ((StartTime is null) or (@StartTime <= StartTime))) AND
+	   ((@EndTime is null) OR ((EndTime is null) or (@EndTime >= EndTime))) AND
+	   ((@CategoryID is null) OR ((S.CategoryID is null) or (S.CategoryID=@CategoryID))) AND
+	   ((@ProfilePropertyValue is null) OR ((ProfilePropertyValue is null) or (ProfilePropertyValue = @ProfilePropertyValue))) AND
+	   ((@IncludeDisabled = 1) OR ([Disabled]=0))
+ORDER BY Months DESC, Days DESC, DaysofWeek DESC, StartDate, StartTime
+GO
+
+/* Update stored procedure WESNet_ContentDejour_GetContent to handle ContentItems */
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]') AND OBJECTPROPERTY(id,N'IsProcedure') = 1)
+DROP PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}WESNet_ContentDejour_GetContent]
+	@KeyID int,
+    @ModuleID int
+AS
+
+SELECT
+    S.*,
+    C.Category,
+    CI.ContentItemID,
+    CI.Content,
+    CI.ContentTypeID,
+    CI.TabiD,
+    CI.ContentKey,
+    CI.Indexed
+FROM {objectQualifier}WESNet_ContentDejour S
+LEFT OUTER JOIN {objectQualifier}WESNet_ContentDejour_Categories C on C.CategoryID=S.CategoryID
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}ContentItems AS CI ON S.ContentItemId = CI.ContentItemID
+WHERE KeyID = @KeyID AND S.ModuleID = @ModuleID
+GO
